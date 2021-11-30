@@ -2,8 +2,6 @@
 
 .diploma {
   @extend %diploma-student-spacing;
-  border-width: 1px;
-  border-style: dashed;
+  @extend %diploma-student-border;
   border-color: $diploma-color;
-  border-radius: 0.5em;
 }

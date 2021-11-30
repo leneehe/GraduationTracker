@@ -5,3 +5,9 @@ $student-color: #f00;
   margin: 1em 0;
   padding: 1em;
 }
+
+%diploma-student-border {
+  border-width: 1px;
+  border-style: dashed;
+  border-radius: 0.5em;
+}
