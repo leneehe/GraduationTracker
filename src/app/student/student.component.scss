@@ -1,0 +1,21 @@
+.diploma,
+.student {
+  margin: 1em 0;
+  padding: 1em;
+}
+
+.student {
+  border-width: 1px;
+  border-style: dashed;
+  border-color: #f00;
+  border-radius: 0.5em;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  .has-graduated {
+    font-weight: bold;
+  }
+
+}

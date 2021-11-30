@@ -1,0 +1,7 @@
+<div class="student" *ngIf="student">
+  <h3>Student {{ student.Id }}</h3>
+  <ul>
+    <li *ngFor="let course of student.Courses">{{ course.Name }} - Mark: {{ course.Mark }}</li>
+  </ul>
+  <div *ngIf="diploma && student" class="has-graduated">Has graduated? {{ hasGraduated(diploma, student) }}</div>
+</div>
