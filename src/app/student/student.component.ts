@@ -21,6 +21,13 @@ export class StudentComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  get showHasGraduated(): [boolean, number] | undefined {
+    if (this.diploma && this.student)
+      return this.hasGraduated(this.diploma, this.student)
+    else
+      return;
+  }
+
   hasGraduated(diploma: Diploma, student: Student): [boolean, number]
   {
       var credits = 0;
