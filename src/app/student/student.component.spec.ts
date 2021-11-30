@@ -63,7 +63,8 @@ describe('StudentComponent', () => {
     var graduated: [boolean, STANDING][] = [];
 
     students.forEach(student => {
-      graduated.push(component.hasGraduated(diploma, student));
+      if (component.hasGraduated(diploma, student)[0])
+        graduated.push(component.hasGraduated(diploma, student));
     });
 
     expect(graduated[graduated.length -1]).toBeTruthy();

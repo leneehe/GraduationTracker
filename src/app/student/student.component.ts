@@ -21,68 +21,46 @@ export class StudentComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get showHasGraduated(): [boolean, number] | undefined {
+  get showHasGraduated(): [boolean, STANDING] | undefined {
     if (this.diploma && this.student)
       return this.hasGraduated(this.diploma, this.student)
     else
       return;
   }
 
-  hasGraduated(diploma: Diploma, student: Student): [boolean, number]
-  {
+  hasGraduated(diploma: Diploma, student: Student): [boolean, STANDING] {
       var credits = 0;
-      var average = 0;
 
-      for(let i = 0; i < diploma.Requirements.length; i++)
-      {
-          for(let j = 0; j < student.Courses.length; j++)
-          {
-              var requirement = this.repository.GetRequirement(diploma.Requirements[i]);
+      diploma.Requirements.map(requirementId => this.repository.GetRequirement(requirementId)).forEach(
+        requirement => {
 
-              if (requirement) {
-                for (let k = 0; k < requirement.Courses.length; k++)
-                {
-                    if (requirement.Courses[k] == student.Courses[j].Id)
-                    {
-                        average += student.Courses[j].Mark;
-                        if (student.Courses[j].Mark > requirement.MinimumMark)
-                        {
-                            credits += requirement.Credits;
-                        }
-                    }
+          if (requirement) {
+
+            requirement.Courses.map(id => student.Courses.find(course => course.Id === id)).forEach(
+              courseTaken => {
+
+                if (courseTaken) {
+                  // marks.push(courseTaken.Mark) //add to calculate average of requirement courses only
+                  credits += courseTaken.Mark >= requirement.MinimumMark ? (requirement.Credits/requirement.Courses.length) : 0;
                 }
+
               }
+            )
 
           }
-      }
+        }
+      );
 
-      average = average / student.Courses.length;
+      var isGraduated = credits >= diploma.Credits;
+
+      const calcAverage = (arr:number[]):number => { return arr.reduce( ( a, b ) => a + b, 0 ) / arr.length};
+      var marks = student.Courses.map(course => course.Mark);
+      var average = calcAverage(marks);
 
       var standing = STANDING.None;
+      standing = average < 50 ? STANDING.Remedial : (average < 80 ? STANDING.Average : (average < 95 ? STANDING.MagnaCumLaude : STANDING.SumaCumLaude));
 
-      if (average < 50)
-          standing = STANDING.Remedial;
-      else if (average < 80)
-          standing = STANDING.Average;
-      else if (average < 95)
-          standing = STANDING.MagnaCumLaude;
-      else
-          standing = STANDING.SumaCumLaude;
-
-      switch (standing)
-      {
-          case STANDING.Remedial:
-              return [false, standing];
-          case STANDING.Average:
-              return [true, standing];
-          case STANDING.SumaCumLaude:
-              return [true, standing];
-          case STANDING.MagnaCumLaude:
-              return [true, standing];
-
-          default:
-              return [false, standing];
-      }
+      return [isGraduated, standing];
   }
 
 }
