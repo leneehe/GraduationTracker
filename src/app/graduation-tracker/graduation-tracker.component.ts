@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Diploma } from '../Diploma';
 import { Repository } from '../repository';
-import { STANDING } from '../STANDING';
 import { Student } from '../Student';
 
 @Component({
