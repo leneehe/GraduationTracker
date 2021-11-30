@@ -1,13 +1,10 @@
-.diploma,
-.student {
-  margin: 1em 0;
-  padding: 1em;
-}
+@import 'src/assets/scss/variables-extends';
 
 .student {
+  @extend %diploma-student-spacing;
   border-width: 1px;
   border-style: dashed;
-  border-color: #f00;
+  border-color: $student-color;
   border-radius: 0.5em;
 
   h3 {
