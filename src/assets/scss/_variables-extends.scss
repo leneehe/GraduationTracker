@@ -1,13 +1,19 @@
 $diploma-color: #00f;
 $student-color: #f00;
 
-%diploma-student-spacing {
+%card-spacing {
   margin: 1em 0;
   padding: 1em;
 }
 
-%diploma-student-border {
+%card-border {
   border-width: 1px;
   border-style: dashed;
   border-radius: 0.5em;
+}
+
+@mixin card($color) {
+  @extend %card-spacing;
+  @extend %card-border;
+  border-color: $color;
 }

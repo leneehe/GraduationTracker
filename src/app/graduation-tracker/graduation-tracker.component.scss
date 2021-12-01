@@ -1,7 +1,5 @@
 @import 'src/assets/scss/variables-extends';
 
 .diploma {
-  @extend %diploma-student-spacing;
-  @extend %diploma-student-border;
-  border-color: $diploma-color;
+  @include card($diploma-color);
 }
