@@ -2,6 +2,44 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
+import { StudentComponent } from './student/student.component';
+
+import { Diploma } from './Diploma';
+import { STANDING } from './STANDING';
+import { Student } from './Student';
+
+const diploma: Diploma = {
+  Id: 1,
+  Credits: 4,
+  Requirements: [ 100, 102, 103, 104 ]
+};
+
+const students: Student[] = [
+  new Student(1, [
+    { Id: 1, Name: "Math", Mark: 95 },
+    { Id: 2, Name: "Science", Mark: 95 },
+    { Id: 3, Name: "Literature", Mark: 95 },
+    { Id: 4, Name: "Physical Education", Mark: 95 }
+  ]),
+  new Student(2, [
+    {Id: 1, Name: "Math", Mark: 80 },
+    {Id: 2, Name: "Science", Mark: 80 },
+    {Id: 3, Name: "Literature", Mark: 80 },
+    {Id: 4, Name: "Physichal Education", Mark: 80 }
+  ]),
+  new Student(3, [
+    {Id: 1, Name: "Math", Mark: 50 },
+    {Id: 2, Name: "Science", Mark: 50 },
+    {Id: 3, Name: "Literature", Mark: 50 },
+    {Id: 4, Name: "Physichal Education", Mark: 50 }
+  ]),
+  new Student(4, [
+    {Id: 1, Name: "Math", Mark: 40 },
+    {Id: 2, Name: "Science", Mark: 40 },
+    {Id: 3, Name: "Literature", Mark: 40 },
+    {Id: 4, Name: "Physichal Education", Mark: 40 }
+  ])
+];
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -10,7 +48,8 @@ describe('AppComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        StudentComponent,
       ],
     }).compileComponents();
   });
@@ -32,6 +71,21 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('GraduationTracker app is running!');
+  });
+
+  it('should have credits', () => {
+    const fixture = TestBed.createComponent(StudentComponent);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    var graduated: [boolean, STANDING][] = [];
+
+    students.forEach(student => {
+      if (component.hasGraduated(diploma, student)[0])
+        graduated.push(component.hasGraduated(diploma, student));
+    });
+
+    expect(graduated[graduated.length -1]).toBeTruthy();
   });
 
 });

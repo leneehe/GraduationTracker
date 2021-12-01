@@ -1,42 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 import { StudentComponent } from './student.component';
-import { Diploma } from '../Diploma';
-import { STANDING } from '../STANDING';
 import { Student } from '../Student';
-
-const diploma: Diploma = {
-  Id: 1,
-  Credits: 4,
-  Requirements: [ 100, 102, 103, 104 ]
-};
-
-const students: Student[] = [
-  new Student(1, [
-    { Id: 1, Name: "Math", Mark: 95 },
-    { Id: 2, Name: "Science", Mark: 95 },
-    { Id: 3, Name: "Literature", Mark: 95 },
-    { Id: 4, Name: "Physical Education", Mark: 95 }
-  ]),
-  new Student(2, [
-    {Id: 1, Name: "Math", Mark: 80 },
-    {Id: 2, Name: "Science", Mark: 80 },
-    {Id: 3, Name: "Literature", Mark: 80 },
-    {Id: 4, Name: "Physichal Education", Mark: 80 }
-  ]),
-  new Student(3, [
-    {Id: 1, Name: "Math", Mark: 50 },
-    {Id: 2, Name: "Science", Mark: 50 },
-    {Id: 3, Name: "Literature", Mark: 50 },
-    {Id: 4, Name: "Physichal Education", Mark: 50 }
-  ]),
-  new Student(4, [
-    {Id: 1, Name: "Math", Mark: 40 },
-    {Id: 2, Name: "Science", Mark: 40 },
-    {Id: 3, Name: "Literature", Mark: 40 },
-    {Id: 4, Name: "Physichal Education", Mark: 40 }
-  ])
-];
+import { Diploma } from '../Diploma';
 
 describe('StudentComponent', () => {
   let component: StudentComponent;
@@ -44,7 +12,8 @@ describe('StudentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StudentComponent ]
+      declarations: [ StudentComponent ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   });
@@ -52,6 +21,12 @@ describe('StudentComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StudentComponent);
     component = fixture.componentInstance;
+    component.student = new Student(8, [
+      {Id: 1, Name: "Math", Mark: 88 },
+      {Id: 2, Name: "Science", Mark: 88 },
+      {Id: 3, Name: "Literature", Mark: 88 },
+      {Id: 4, Name: "Physical Education", Mark: 88 }
+    ]);
     fixture.detectChanges();
   });
 
@@ -59,14 +34,27 @@ describe('StudentComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have credits', () => {
-    var graduated: [boolean, STANDING][] = [];
+  it('should display student Id as 8', () => {
+    const bannerDe: DebugElement = fixture.debugElement;
+    const headingDe = bannerDe.query(By.css('h3'));
+    const h3: HTMLElement = headingDe.nativeElement;
+    expect(h3.textContent).toContain('8');
+  })
 
-    students.forEach(student => {
-      if (component.hasGraduated(diploma, student)[0])
-        graduated.push(component.hasGraduated(diploma, student));
-    });
+  it('should display last course name and mark as Physical Education - Mark: 88', () => {
+    const bannerDe: DebugElement = fixture.debugElement;
+    const listDe = bannerDe.query(By.css('li:last-child'));
+    const li: HTMLElement = listDe.nativeElement;
+    expect(li.textContent).toEqual('Physical Education - Mark: 88');
+  })
 
-    expect(graduated[graduated.length -1]).toBeTruthy();
-  });
+  it('should showHasGraduated as [true, 2]', () => {
+    component.diploma = {
+      Id: 1,
+      Credits: 4,
+      Requirements: [ 100, 102, 103, 104 ]
+    };
+    expect(component.showHasGraduated).toEqual([true, 2])
+  })
+
 });
